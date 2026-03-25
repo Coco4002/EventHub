@@ -34,22 +34,26 @@ namespace EventHub.Data
             modelBuilder.Entity<Invitation>()
                 .HasOne(i => i.Event)
                 .WithMany(e => e.Invitations)
-                .HasForeignKey(i => i.EventId);
+                .HasForeignKey(i => i.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Invitation>()
                 .HasOne(i => i.Participant)
                 .WithMany(u => u.Invitations)
-                .HasForeignKey(i => i.ParticipantId);
+                .HasForeignKey(i => i.ParticipantId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<EventRequest>()
                 .HasOne(er => er.Event)
-                .WithMany()
-                .HasForeignKey(er => er.EventId);
+                .WithMany(e => e.EventRequests)
+                .HasForeignKey(er => er.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<EventRequest>()
                 .HasOne(er => er.User)
-                .WithMany()
-                .HasForeignKey(er => er.UserId);
+                .WithMany(u => u.EventRequests)
+                .HasForeignKey(er => er.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<UserCategory>()
                 .HasOne(uc => uc.User)
@@ -64,12 +68,14 @@ namespace EventHub.Data
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Event)
                 .WithMany(e => e.Comments)
-                .HasForeignKey(c => c.EventId);
+                .HasForeignKey(c => c.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Comments)
-                .HasForeignKey(c => c.UserId);
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
