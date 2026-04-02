@@ -37,14 +37,78 @@ Aplicația ajută utilizatorii să organizeze și să participe la evenimente, a
 
 ## Tabele în Baza de Date
 
-1. **Users (Utilizatori)**:
+### 1. **Users**
+| Câmp        | Tip       | Descriere                        |
+|-------------|-----------|----------------------------------|
+| Id          | int       | Cheie primară, identificator unic |
+| Email       | string    | Adresa de email a utilizatorului |
+| FullName    | string    | Numele complet al utilizatorului |
+| PasswordHash| string    | Parola criptată a utilizatorului |
+| Role        | string    | Rolul utilizatorului (Admin, Organizator, Participant) |
+| CreatedAt   | DateTime  | Data creării contului            |
+| IsActive    | bool      | Starea contului (activ sau inactiv) |
 
-2. **Events (Evenimente)**:
+### 2. **Categories**
+| Câmp        | Tip       | Descriere                        |
+|-------------|-----------|----------------------------------|
+| Id          | int       | Cheie primară, identificator unic |
+| Name        | string    | Numele categoriei                |
+| Description | string    | Descrierea categoriei            |
 
-3. **Invitations (Invitații)**:
+### 3. **Events**
+| Câmp        | Tip       | Descriere                        |
+|-------------|-----------|----------------------------------|
+| Id          | int       | Cheie primară, identificator unic |
+| Name        | string    | Numele evenimentului             |
+| Date        | DateTime  | Data evenimentului               |
+| Location    | string    | Locația evenimentului            |
+| CategoryId  | int       | Cheie externă către Categories  |
+| OrganizerId | int       | Cheie externă către Users       |
+| CreatedAt   | DateTime  | Data creării evenimentului       |
 
-4. **Comments (Comentarii)**:
+### 4. **UserCategories**
+| Câmp        | Tip       | Descriere                        |
+|-------------|-----------|----------------------------------|
+| UserId      | int       | Cheie externă către Users       |
+| CategoryId  | int       | Cheie externă către Categories  |
 
+### 5. **Invitations**
+| Câmp        | Tip       | Descriere                        |
+|-------------|-----------|----------------------------------|
+| Id          | int       | Cheie primară, identificator unic |
+| EventId     | int       | Cheie externă către Events      |
+| UserId      | int       | Cheie externă către Users       |
+| Status      | string    | Statusul invitației (Ex: Acceptat, Refuzat) |
+| Message     | string    | Mesaj personalizat al invitației |
+| SentAt      | DateTime  | Data trimiterii invitației      |
+
+### 6. **EventRequests**
+| Câmp        | Tip       | Descriere                        |
+|-------------|-----------|----------------------------------|
+| Id          | int       | Cheie primară, identificator unic |
+| EventId     | int       | Cheie externă către Events      |
+| UserId      | int       | Cheie externă către Users       |
+| Status      | string    | Statusul cererii (Ex: Aprobat, Respins) |
+| RequestedAt | DateTime  | Data cererii                    |
+| RespondedAt | DateTime  | Data răspunsului                |
+
+### 7. **Comments**
+| Câmp        | Tip       | Descriere                        |
+|-------------|-----------|----------------------------------|
+| Id          | int       | Cheie primară, identificator unic |
+| EventId     | int       | Cheie externă către Events      |
+| UserId      | int       | Cheie externă către Users       |
+| Content     | string    | Conținutul comentariului        |
+| CreatedAt   | DateTime  | Data creării comentariului      |
+
+## Relațiile între tabele
+
+- **Users ↔ Events**: Un utilizator poate organiza mai multe evenimente (1:N).
+- **Events ↔ Categories**: Fiecare eveniment aparține unei singure categorii (N:1).
+- **Users ↔ Categories**: Utilizatorii pot fi interesați de mai multe categorii (M:N) — se realizează prin tabela intermediară `UserCategories`.
+- **Users ↔ Invitations**: Utilizatorii pot primi invitații la mai multe evenimente (1:N).
+- **Users ↔ EventRequests**: Utilizatorii pot face cereri pentru a participa la evenimente (1:N).
+- **Events ↔ Comments**: Fiecare eveniment poate avea mai multe comentarii (1:N).
 ## Fluxul Aplicației
 
 1. **Autentificare**:
