@@ -1,0 +1,46 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>EventHub</mat-card-title>
+      <mat-card-subtitle>Autentificare</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="email@exemplu.com">
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+            Emailul este obligatoriu
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+            Email invalid
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Parola</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            Parola este obligatorie
+          </mat-error>
+        </mat-form-field>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <button mat-raised-button color="primary" type="submit"
+          [disabled]="loginForm.invalid || loading" class="full-width">
+          {{ loading ? 'Se incarca...' : 'Autentificare' }}
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <p>Nu ai cont? <a routerLink="/register">Inregistreaza-te</a></p>
+    </mat-card-actions>
+  </mat-card>
+</div>
