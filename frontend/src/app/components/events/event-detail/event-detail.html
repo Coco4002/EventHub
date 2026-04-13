@@ -1,1 +1,124 @@
-<p>event-detail works!</p>
+<div class="detail-container" *ngIf="!loading && event">
+
+  <!-- Header eveniment -->
+  <div class="event-header">
+    <div>
+      <h1>{{ event.title }}</h1>
+      <mat-chip>{{ event.category.name }}</mat-chip>
+    </div>
+    <div class="event-actions" *ngIf="isOrganizer() || isAdmin()">
+      <button mat-stroked-button color="primary" [routerLink]="['/events', event.id, 'edit']">
+        <mat-icon>edit</mat-icon> Editeaza
+      </button>
+      <button mat-stroked-button color="warn" (click)="deleteEvent()">
+        <mat-icon>delete</mat-icon> Sterge
+      </button>
+    </div>
+  </div>
+
+  <!-- Detalii -->
+  <mat-card class="info-card">
+    <mat-card-content>
+      <p class="description">{{ event.description }}</p>
+      <mat-divider></mat-divider>
+      <div class="details">
+        <p><mat-icon>location_on</mat-icon> {{ event.location }}</p>
+        <p><mat-icon>calendar_today</mat-icon> {{ formatDate(event.eventDate) }}</p>
+        <p><mat-icon>person</mat-icon> Organizator: {{ event.organizer.fullName }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Invitatia mea -->
+  <mat-card class="invitation-card" *ngIf="currentUser && !isOrganizer() && !isAdmin()">
+    <mat-card-header>
+      <mat-card-title>Invitatia ta</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="myInvitation; else noInvitation">
+        <p>Status: <strong>{{ myInvitation.status }}</strong></p>
+        <div *ngIf="myInvitation.status === 'Pending'" class="invitation-actions">
+          <button mat-raised-button color="primary" (click)="respondInvitation('Accepted')">
+            <mat-icon>check</mat-icon> Accepta
+          </button>
+          <button mat-stroked-button color="warn" (click)="respondInvitation('Declined')">
+            <mat-icon>close</mat-icon> Refuza
+          </button>
+        </div>
+        <p *ngIf="myInvitation.status === 'Accepted'" style="color: green;">
+          <mat-icon>check_circle</mat-icon> Participi la acest eveniment!
+        </p>
+        <p *ngIf="myInvitation.status === 'Declined'" style="color: red;">
+          <mat-icon>cancel</mat-icon> Ai refuzat invitatia.
+        </p>
+      </div>
+      <ng-template #noInvitation>
+        <p>Nu ai fost invitat la acest eveniment.</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Nu esti logat -->
+  <mat-card *ngIf="!currentUser" class="login-prompt">
+    <mat-card-content>
+      <p>
+        <mat-icon>info</mat-icon>
+        <a routerLink="/login">Autentifica-te</a> pentru a interactiona cu acest eveniment.
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Comentarii -->
+  <mat-card class="comments-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>comment</mat-icon>
+        Comentarii ({{ event.comments.length }})
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <!-- Adauga comentariu -->
+      <div *ngIf="canComment()" class="add-comment">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Scrie un comentariu...</mat-label>
+          <textarea matInput [(ngModel)]="newComment" rows="3"></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="submitComment()"
+          [disabled]="!newComment.trim()">
+          <mat-icon>send</mat-icon> Trimite
+        </button>
+      </div>
+
+      <p *ngIf="currentUser && !canComment()" class="cannot-comment">
+        Trebuie sa accepti invitatia pentru a putea comenta.
+      </p>
+
+      <mat-divider></mat-divider>
+
+      <!-- Lista comentarii -->
+      <div *ngIf="event.comments.length === 0" class="no-comments">
+        <p>Nu exista comentarii inca.</p>
+      </div>
+
+      <div *ngFor="let comment of event.comments" class="comment">
+        <div class="comment-header">
+          <strong>{{ comment.user.fullName }}</strong>
+          <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+          <button *ngIf="comment.user.id === currentUser?.id || isAdmin() || isOrganizer()"
+            mat-icon-button color="warn" (click)="deleteComment(comment.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <p class="comment-content">{{ comment.content }}</p>
+        <mat-divider></mat-divider>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
+<div *ngIf="loading" class="loading">
+  <p>Se incarca...</p>
+</div>

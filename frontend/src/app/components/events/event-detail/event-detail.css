@@ -1,0 +1,93 @@
+.detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.event-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+}
+
+.event-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.info-card, .invitation-card, .comments-card, .login-prompt {
+  margin-bottom: 24px;
+}
+
+.description {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+.details p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+.invitation-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.add-comment {
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.cannot-comment {
+  color: #999;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+.comment {
+  padding: 12px 0;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.comment-date {
+  color: #999;
+  font-size: 12px;
+  flex: 1;
+}
+
+.comment-content {
+  color: #444;
+  margin: 0;
+}
+
+.no-comments {
+  text-align: center;
+  color: #999;
+  padding: 24px;
+}
+
+.loading {
+  text-align: center;
+  padding: 48px;
+}
