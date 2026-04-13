@@ -1,1 +1,60 @@
-<p>event-list works!</p>
+<div class="event-list-container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Evenimente</h1>
+  </div>
+
+  <!-- Filtrare categorii -->
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Filtreaza dupa categorie</mat-label>
+      <mat-select [(ngModel)]="selectedCategoryId" (ngModelChange)="onCategoryChange()">
+        <mat-option [value]="null">Toate categoriile</mat-option>
+        <mat-option *ngFor="let cat of categories" [value]="cat.id">
+          {{ cat.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Lista evenimente -->
+  <div *ngIf="!loading" class="events-grid">
+    <mat-card *ngFor="let event of events" class="event-card">
+      <mat-card-header>
+        <mat-card-title>{{ event.title }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip>{{ event.category.name }}</mat-chip>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="description">{{ event.description }}</p>
+        <div class="event-details">
+          <p><mat-icon>location_on</mat-icon> {{ event.location }}</p>
+          <p><mat-icon>calendar_today</mat-icon> {{ formatDate(event.eventDate) }}</p>
+          <p><mat-icon>person</mat-icon> {{ event.organizer.fullName }}</p>
+          <p><mat-icon>group</mat-icon> {{ event.participantCount }} participanti</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary" [routerLink]="['/events', event.id]">
+          Vezi detalii
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Mesaj daca nu sunt evenimente -->
+    <div *ngIf="events.length === 0" class="no-events">
+      <mat-icon>event_busy</mat-icon>
+      <p>Nu exista evenimente momentan.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,1 +1,55 @@
-<p>navbar works!</p>
+<mat-toolbar color="primary">
+  <a routerLink="/events" class="brand">
+    <mat-icon>event</mat-icon>
+    EventHub
+  </a>
+
+  <span class="spacer"></span>
+
+  <!-- Navigatie -->
+  <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
+
+    <a mat-button routerLink="/events">
+      <mat-icon>event</mat-icon>
+      Evenimente
+    </a>
+
+    <a mat-button routerLink="/invitations">
+      <mat-icon>mail</mat-icon>
+      Invitatii
+    </a>
+
+    <a *ngIf="isOrganizer()" mat-button routerLink="/events/new">
+      <mat-icon>add</mat-icon>
+      Eveniment nou
+    </a>
+
+    <!-- Meniu user -->
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+      {{ currentUser?.fullName }}
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Deconectare
+      </button>
+    </mat-menu>
+
+  </ng-container>
+
+  <ng-template #notLoggedIn>
+    <a mat-button routerLink="/login">
+      <mat-icon>login</mat-icon>
+      Autentificare
+    </a>
+    <a mat-stroked-button routerLink="/register" style="color: white; border-color: white;">
+      Inregistrare
+    </a>
+  </ng-template>
+
+</mat-toolbar>

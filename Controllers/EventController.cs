@@ -24,6 +24,7 @@ namespace EventHub.Controllers
             int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] int? categoryId)
         {
             var query = _context.Events
@@ -54,6 +55,7 @@ namespace EventHub.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var ev = await _context.Events
@@ -140,7 +142,7 @@ namespace EventHub.Controllers
             };
 
             _context.Events.Add(newEvent);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
             var interestedUsers = await _context.UserCategories
                 .Where(uc => uc.CategoryId == dto.CategoryId && uc.UserId != userId)

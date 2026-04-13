@@ -1,0 +1,31 @@
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #6a1b9a !important;
+  color: white !important;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.spacer {
+  flex: 1;
+}
+
+a, button {
+  color: white !important;
+}
+
+.register-btn {
+  border: 2px solid white !important;
+  color: white !important;
+  border-radius: 20px;
+}
