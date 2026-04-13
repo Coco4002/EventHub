@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
@@ -30,7 +30,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -46,11 +47,13 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
+        this.loading = false;
         this.router.navigate(['/events']);
       },
-      error: (err) => {
-        this.errorMessage = err.error || 'Email sau parola incorecta.';
+      error: () => {
+        this.errorMessage = 'Email sau parola incorecta.';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
