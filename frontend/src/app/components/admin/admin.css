@@ -1,0 +1,67 @@
+.admin-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card, .role-card {
+  text-align: center;
+}
+
+.stat-card mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #6a1b9a;
+}
+
+.stat-number {
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.role-card.admin .stat-number { color: #6a1b9a; }
+.role-card.organizer .stat-number { color: #1976d2; }
+.role-card.participant .stat-number { color: #388e3c; }
+
+.users-card {
+  margin-top: 8px;
+}
+
+.users-table {
+  width: 100%;
+}
+
+.loading {
+  text-align: center;
+  padding: 24px;
+  color: #999;
+}

@@ -33,6 +33,11 @@
         <mat-icon style="color: #333 !important;">dashboard</mat-icon>
         Dashboard
       </button>
+      <button mat-menu-item routerLink="/admin" *ngIf="currentUser?.role === 'Admin'"
+        style="color: #333 !important;">
+        <mat-icon style="color: #333 !important;">admin_panel_settings</mat-icon>
+        Admin
+      </button>
       <button mat-menu-item (click)="logout()" style="color: #333 !important;">
         <mat-icon style="color: #333 !important;">logout</mat-icon>
         Deconectare
@@ -50,5 +55,6 @@
       Inregistrare
     </a>
   </ng-template>
+  
 
 </mat-toolbar>

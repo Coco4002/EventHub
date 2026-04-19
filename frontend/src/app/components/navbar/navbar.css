@@ -29,3 +29,7 @@ a, button {
   color: white !important;
   border-radius: 20px;
 }
+
+a[mat-button], button[mat-button] {
+  margin: 0 4px;
+}

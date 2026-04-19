@@ -1,0 +1,139 @@
+<div class="admin-container">
+  <h1><mat-icon>admin_panel_settings</mat-icon> Panou Admin</h1>
+
+  <!-- Statistici -->
+  <div class="stats-grid" *ngIf="stats">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-number">{{ stats.totalUsers }}</div>
+        <div class="stat-label">Utilizatori</div>
+        <mat-icon>people</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-number">{{ stats.totalEvents }}</div>
+        <div class="stat-label">Evenimente</div>
+        <mat-icon>event</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-number">{{ stats.totalInvitations }}</div>
+        <div class="stat-label">Invitatii</div>
+        <mat-icon>mail</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-number">{{ stats.totalComments }}</div>
+        <div class="stat-label">Comentarii</div>
+        <mat-icon>comment</mat-icon>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Roluri -->
+  <div class="roles-grid" *ngIf="stats">
+    <mat-card class="role-card admin">
+      <mat-card-content>
+        <div class="stat-number">{{ stats.usersByRole.admins }}</div>
+        <div class="stat-label">Admini</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="role-card organizer">
+      <mat-card-content>
+        <div class="stat-number">{{ stats.usersByRole.organizatori }}</div>
+        <div class="stat-label">Organizatori</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="role-card participant">
+      <mat-card-content>
+        <div class="stat-number">{{ stats.usersByRole.participanti }}</div>
+        <div class="stat-label">Participanti</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Tabel useri -->
+  <mat-card class="users-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>manage_accounts</mat-icon>
+        Gestionare Utilizatori
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div *ngIf="loading" class="loading">Se incarca...</div>
+
+      <table *ngIf="!loading" mat-table [dataSource]="users" class="users-table">
+
+        <!-- Nume -->
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef>Nume</th>
+          <td mat-cell *matCellDef="let user">{{ user.fullName }}</td>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        </ng-container>
+
+        <!-- Rol -->
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef>Rol</th>
+          <td mat-cell *matCellDef="let user">
+            <mat-select [(ngModel)]="user.role"
+              (ngModelChange)="changeRole(user.id, $event)"
+              [disabled]="user.id === getCurrentUserId()">
+              <mat-option value="Admin">Admin</mat-option>
+              <mat-option value="Organizator">Organizator</mat-option>
+              <mat-option value="Participant">Participant</mat-option>
+            </mat-select>
+          </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let user">
+            <mat-chip [style.background]="user.isActive ? 'green' : 'red'"
+              style="color: white;">
+              {{ user.isActive ? 'Activ' : 'Inactiv' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Actiuni -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actiuni</th>
+          <td mat-cell *matCellDef="let user">
+            <button mat-icon-button
+              [color]="user.isActive ? 'warn' : 'primary'"
+              (click)="toggleActive(user)"
+              [disabled]="user.id === getCurrentUserId()"
+              [title]="user.isActive ? 'Dezactiveaza' : 'Activeaza'">
+              <mat-icon>{{ user.isActive ? 'block' : 'check_circle' }}</mat-icon>
+            </button>
+            <button mat-icon-button color="warn"
+              (click)="deleteUser(user.id)"
+              [disabled]="user.id === getCurrentUserId()"
+              title="Sterge">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['fullName', 'email', 'role', 'status', 'actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['fullName', 'email', 'role', 'status', 'actions'];"></tr>
+      </table>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>
