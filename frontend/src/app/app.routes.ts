@@ -8,6 +8,7 @@ import { InvitationListComponent } from './components/invitations/invitation-lis
 import { DashboardComponent } from './components/dashboard/dashboard';
 import { authGuard } from './guards/auth.guard';
 import { AdminComponent } from './components/admin/admin';
+import { ProfileComponent } from './components/profile/profile';  
 
 export const routes: Routes = [
   { path: '', redirectTo: '/events', pathMatch: 'full' },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'events/:id/edit', component: EventFormComponent, canActivate: [authGuard] },
   { path: 'invitations', component: InvitationListComponent, canActivate: [authGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/events' },
 ];

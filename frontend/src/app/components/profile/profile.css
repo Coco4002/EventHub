@@ -1,0 +1,95 @@
+.profile-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.profile-header-card {
+  margin-bottom: 24px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.avatar mat-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #6a1b9a;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h1 {
+  margin: 0 0 4px 0;
+}
+
+.role-badge {
+  display: inline-block;
+  background-color: #6a1b9a;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.email, .joined {
+  color: #666;
+  font-size: 14px;
+  margin: 2px 0;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  color: #6a1b9a;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #999;
+}
+
+.section-card {
+  margin-bottom: 24px;
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.success-message {
+  color: green;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
