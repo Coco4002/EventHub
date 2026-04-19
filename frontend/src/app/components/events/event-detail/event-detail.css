@@ -127,3 +127,26 @@ mat-card-header {
 mat-chip.pending { background-color: orange; color: white; }
 mat-chip.accepted { background-color: green; color: white; }
 mat-chip.declined { background-color: red; color: white; }
+
+.request-card, .requests-card {
+  margin-bottom: 24px;
+}
+
+.request-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.request-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.request-actions {
+  display: flex;
+  gap: 8px;
+}

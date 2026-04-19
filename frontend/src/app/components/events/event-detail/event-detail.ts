@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { HttpClient } from '@angular/common/http';
+import { EventRequestsService } from '../../../services/event-requests';
 
 @Component({
   selector: 'app-event-detail',
@@ -43,6 +44,8 @@ export class EventDetailComponent implements OnInit {
   allUsers: any[] = [];
   selectedUserId: number | null = null;
   showInviteForm = false;
+  myRequest: any = null;
+  eventRequests: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +55,8 @@ export class EventDetailComponent implements OnInit {
     private invitationsService: InvitationsService,
     private usersService: UsersService,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private eventRequestsService: EventRequestsService,
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +71,8 @@ export class EventDetailComponent implements OnInit {
         this.event = data;
         this.loading = false;
         if (this.currentUser) this.findMyInvitation();
+        if (this.currentUser && !this.isOrganizer()) this.findMyRequest();
+        if (this.isOrganizer() || this.isAdmin()) this.loadEventRequests();
         if (this.isOrganizer()) this.loadUsers();
         this.cdr.detectChanges();
       },
@@ -186,5 +192,50 @@ export class EventDetailComponent implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  findMyRequest(): void {
+    this.eventRequestsService.getEventRequests(this.event.id).subscribe({
+      next: () => {}
+    });
+    // cauta in event requests
+    this.eventRequestsService.getMyRequests().subscribe({
+      next: (data) => {
+        this.myRequest = data.find((r: any) => r.event.id === this.event.id) || null;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  loadEventRequests(): void {
+    this.eventRequestsService.getEventRequests(this.event.id).subscribe({
+      next: (data) => {
+        this.eventRequests = data;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  sendRequest(): void {
+    this.eventRequestsService.sendRequest(this.event.id).subscribe({
+      next: (data) => {
+        this.myRequest = { id: data.id, status: 'Pending' };
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  respondRequest(requestId: number, status: string): void {
+    this.eventRequestsService.respond(requestId, status).subscribe({
+      next: () => {
+        const req = this.eventRequests.find(r => r.id === requestId);
+        if (req) req.status = status;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  hasInvitation(): boolean {
+    return !!this.myInvitation;
   }
 }

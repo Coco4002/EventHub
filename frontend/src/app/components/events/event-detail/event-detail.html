@@ -29,6 +29,70 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Cerere participare (doar participant fara invitatie) -->
+  <mat-card *ngIf="currentUser && !isOrganizer() && !isAdmin() && !hasInvitation()" 
+    class="request-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>how_to_reg</mat-icon>
+        Participare
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div *ngIf="!myRequest">
+        <p>Nu ai fost invitat la acest eveniment dar poti cere sa participi.</p>
+        <button mat-raised-button color="primary" (click)="sendRequest()">
+          <mat-icon>send</mat-icon>
+          Cere sa participi
+        </button>
+      </div>
+
+      <div *ngIf="myRequest">
+        <p>Ai trimis o cerere de participare.</p>
+        <p>Status: <strong>{{ myRequest.status }}</strong></p>
+        <p *ngIf="myRequest.status === 'Approved'" style="color: green;">
+          <mat-icon>check_circle</mat-icon> Cererea ta a fost aprobata!
+        </p>
+        <p *ngIf="myRequest.status === 'Rejected'" style="color: red;">
+          <mat-icon>cancel</mat-icon> Cererea ta a fost respinsa.
+        </p>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Cereri primite (doar organizator) -->
+  <mat-card *ngIf="(isOrganizer() || isAdmin()) && eventRequests.length > 0" 
+    class="requests-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>how_to_reg</mat-icon>
+        Cereri de participare ({{ eventRequests.length }})
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let req of eventRequests" class="request-item">
+        <div class="request-info">
+          <strong>{{ req.user.fullName }}</strong>
+          <span>{{ req.user.email }}</span>
+        </div>
+        <mat-chip [style.background]="req.status === 'Pending' ? 'orange' : req.status === 'Approved' ? 'green' : 'red'"
+          style="color: white;">
+          {{ req.status }}
+        </mat-chip>
+        <div *ngIf="req.status === 'Pending'" class="request-actions">
+          <button mat-raised-button color="primary" (click)="respondRequest(req.id, 'Approved')">
+            <mat-icon>check</mat-icon> Aproba
+          </button>
+          <button mat-stroked-button color="warn" (click)="respondRequest(req.id, 'Rejected')">
+            <mat-icon>close</mat-icon> Respinge
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   <!-- Trimitere invitatii manuale (doar organizator) -->
   <mat-card *ngIf="isOrganizer() || isAdmin()" class="invite-card">
     <mat-card-header>
