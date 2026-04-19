@@ -12,6 +12,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-form',
@@ -26,7 +28,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ],
   templateUrl: './event-form.html',
   styleUrl: './event-form.css'
@@ -45,7 +48,8 @@ export class EventFormComponent implements OnInit {
     private categoriesService: CategoriesService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {
     this.eventForm = this.fb.group({
       title: ['', Validators.required],
@@ -108,9 +112,10 @@ export class EventFormComponent implements OnInit {
     if (this.isEditMode && this.eventId) {
       this.eventsService.update(this.eventId, formValue).subscribe({
         next: () => {
+          this.snackBar.open('Eveniment actualizat!', 'OK', { duration: 3000 });
           this.router.navigate(['/events', this.eventId]);
         },
-        error: (err) => {
+        error: () => {
           this.errorMessage = 'Eroare la actualizare.';
           this.loading = false;
           this.cdr.detectChanges();
@@ -119,9 +124,10 @@ export class EventFormComponent implements OnInit {
     } else {
       this.eventsService.create(formValue).subscribe({
         next: (data) => {
+          this.snackBar.open('Eveniment creat!', 'OK', { duration: 3000 });
           this.router.navigate(['/events', data.id]);
         },
-        error: (err) => {
+        error: () => {
           this.errorMessage = 'Eroare la creare.';
           this.loading = false;
           this.cdr.detectChanges();

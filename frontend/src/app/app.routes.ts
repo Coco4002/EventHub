@@ -9,6 +9,7 @@ import { DashboardComponent } from './components/dashboard/dashboard';
 import { authGuard } from './guards/auth.guard';
 import { AdminComponent } from './components/admin/admin';
 import { ProfileComponent } from './components/profile/profile';  
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/events', pathMatch: 'full' },
@@ -21,6 +22,6 @@ export const routes: Routes = [
   { path: 'invitations', component: InvitationListComponent, canActivate: [authGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
-  { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
+  { path: 'admin', component: AdminComponent, canActivate: [authGuard, adminGuard] },
   { path: '**', redirectTo: '/events' },
 ];

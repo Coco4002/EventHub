@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +22,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
@@ -39,7 +42,8 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {
     this.nameForm = this.fb.group({
       fullName: ['', Validators.required]
@@ -82,10 +86,9 @@ export class ProfileComponent implements OnInit {
       { headers: { 'Content-Type': 'application/json' } }
     ).subscribe({
       next: (data: any) => {
-        this.nameSuccess = 'Numele a fost actualizat!';
+        this.snackBar.open('Numele a fost actualizat!', 'OK', { duration: 3000 });
         this.profile.fullName = data.fullName;
 
-        // Actualizeaza si in localStorage
         const user = this.authService.getCurrentUser();
         user.fullName = data.fullName;
         localStorage.setItem('user', JSON.stringify(user));
@@ -108,7 +111,7 @@ export class ProfileComponent implements OnInit {
 
     this.http.put(this.apiUrl + '/password', { currentPassword, newPassword }).subscribe({
       next: () => {
-        this.passwordSuccess = 'Parola a fost actualizata!';
+        this.snackBar.open('Parola a fost actualizata!', 'OK', { duration: 3000 });
         this.passwordForm.reset();
         this.cdr.detectChanges();
       },
