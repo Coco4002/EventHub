@@ -29,6 +29,54 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- Trimitere invitatii manuale (doar organizator) -->
+  <mat-card *ngIf="isOrganizer() || isAdmin()" class="invite-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>mail</mat-icon>
+        Invitati ({{ event.invitations.length }})
+      </mat-card-title>
+      <div class="card-header-action">
+        <button mat-stroked-button color="primary" (click)="showInviteForm = !showInviteForm">
+          <mat-icon>person_add</mat-icon>
+          Invita
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+
+      <!-- Formular invitatie -->
+      <div *ngIf="showInviteForm" class="invite-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Selecteaza utilizator</mat-label>
+          <mat-select [(ngModel)]="selectedUserId">
+            <mat-option *ngFor="let user of getUninvitedUsers()" [value]="user.id">
+              {{ user.fullName }} ({{ user.email }})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="sendInvitation()"
+          [disabled]="!selectedUserId">
+          <mat-icon>send</mat-icon>
+          Trimite invitatia
+        </button>
+      </div>
+
+      <mat-divider *ngIf="showInviteForm"></mat-divider>
+
+      <!-- Lista invitati -->
+      <div *ngIf="event.invitations.length === 0" class="no-invitations">
+        <p>Nu ai trimis nicio invitatie inca.</p>
+      </div>
+
+      <div *ngFor="let inv of event.invitations" class="invitation-item">
+        <span>{{ inv.participant.fullName }}</span>
+        <mat-chip [class]="inv.status.toLowerCase()">{{ inv.status }}</mat-chip>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
   <!-- Invitatia mea -->
   <mat-card class="invitation-card" *ngIf="currentUser && !isOrganizer() && !isAdmin()">
     <mat-card-header>

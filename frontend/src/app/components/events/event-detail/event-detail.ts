@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { EventsService } from '../../../services/events';
 import { AuthService } from '../../../services/auth';
 import { InvitationsService } from '../../../services/invitations';
+import { UsersService } from '../../../services/users';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -26,7 +28,8 @@ import { HttpClient } from '@angular/common/http';
     MatChipsModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   templateUrl: './event-detail.html',
   styleUrl: './event-detail.css'
@@ -37,6 +40,9 @@ export class EventDetailComponent implements OnInit {
   currentUser: any;
   newComment = '';
   myInvitation: any = null;
+  allUsers: any[] = [];
+  selectedUserId: number | null = null;
+  showInviteForm = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +50,7 @@ export class EventDetailComponent implements OnInit {
     private eventsService: EventsService,
     private authService: AuthService,
     private invitationsService: InvitationsService,
+    private usersService: UsersService,
     private http: HttpClient,
     private cdr: ChangeDetectorRef
   ) {}
@@ -60,6 +67,7 @@ export class EventDetailComponent implements OnInit {
         this.event = data;
         this.loading = false;
         if (this.currentUser) this.findMyInvitation();
+        if (this.isOrganizer()) this.loadUsers();
         this.cdr.detectChanges();
       },
       error: () => {
@@ -74,6 +82,43 @@ export class EventDetailComponent implements OnInit {
     this.myInvitation = this.event.invitations.find(
       (i: any) => i.participant?.id === this.currentUser?.id
     );
+  }
+
+  loadUsers(): void {
+    this.usersService.getAll().subscribe({
+      next: (data) => {
+        this.allUsers = data;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  getUninvitedUsers(): any[] {
+    const invitedIds = this.event?.invitations?.map((i: any) => i.participant.id) || [];
+    return this.allUsers.filter(u =>
+      u.id !== this.currentUser?.id && !invitedIds.includes(u.id)
+    );
+  }
+
+  sendInvitation(): void {
+    if (!this.selectedUserId) return;
+    this.invitationsService.send({
+      eventId: this.event.id,
+      participantId: this.selectedUserId
+    }).subscribe({
+      next: () => {
+        const user = this.allUsers.find(u => u.id === this.selectedUserId);
+        this.event.invitations = [...this.event.invitations, {
+          id: Date.now(),
+          status: 'Pending',
+          sentAt: new Date().toISOString(),
+          participant: { id: user.id, fullName: user.fullName }
+        }];
+        this.selectedUserId = null;
+        this.showInviteForm = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   isOrganizer(): boolean {
@@ -107,10 +152,10 @@ export class EventDetailComponent implements OnInit {
       content: this.newComment
     }).subscribe({
       next: (comment: any) => {
-        this.event.comments.push({
+        this.event.comments = [...this.event.comments, {
           ...comment,
           user: { id: this.currentUser.id, fullName: this.currentUser.fullName }
-        });
+        }];
         this.newComment = '';
         this.cdr.detectChanges();
       }

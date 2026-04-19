@@ -6,7 +6,6 @@
 
   <span class="spacer"></span>
 
-  <!-- Navigatie -->
   <ng-container *ngIf="isLoggedIn(); else notLoggedIn">
 
     <a mat-button routerLink="/events">
@@ -24,18 +23,18 @@
       Eveniment nou
     </a>
 
-    <!-- Meniu user -->
     <button mat-button [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
       {{ currentUser?.fullName }}
     </button>
+
     <mat-menu #userMenu="matMenu">
-      <button mat-menu-item routerLink="/dashboard">
-        <mat-icon>dashboard</mat-icon>
+      <button mat-menu-item routerLink="/dashboard" style="color: #333 !important;">
+        <mat-icon style="color: #333 !important;">dashboard</mat-icon>
         Dashboard
       </button>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
+      <button mat-menu-item (click)="logout()" style="color: #333 !important;">
+        <mat-icon style="color: #333 !important;">logout</mat-icon>
         Deconectare
       </button>
     </mat-menu>

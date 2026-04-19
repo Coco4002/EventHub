@@ -91,3 +91,39 @@
   text-align: center;
   padding: 48px;
 }
+
+.invite-card {
+  margin-bottom: 24px;
+}
+
+.card-header-action {
+  margin-left: auto;
+}
+
+mat-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.invite-form {
+  margin-bottom: 16px;
+  padding: 16px 0;
+}
+
+.invitation-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.no-invitations {
+  color: #999;
+  padding: 16px 0;
+}
+
+mat-chip.pending { background-color: orange; color: white; }
+mat-chip.accepted { background-color: green; color: white; }
+mat-chip.declined { background-color: red; color: white; }

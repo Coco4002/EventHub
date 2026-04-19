@@ -1,1 +1,104 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>Buna, {{ currentUser?.fullName }}!</h1>
+    <p class="role-badge">{{ currentUser?.role }}</p>
+  </div>
+
+  <!-- Categoriile mele -->
+<mat-card class="section-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>category</mat-icon>
+      Categorii
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="section-subtitle">Aboneaza-te la categorii pentru a primi invitatii automate!</p>
+
+    <div class="categories-grid">
+      <div *ngFor="let cat of allCategories" class="category-item-full">
+        <div class="category-info">
+          <strong>{{ cat.name }}</strong>
+          <span class="category-desc">{{ cat.description }}</span>
+        </div>
+        <button *ngIf="!isSubscribed(cat.id)"
+          mat-stroked-button color="primary"
+          (click)="subscribeCategory(cat.id)">
+          <mat-icon>add</mat-icon>
+          Aboneaza-te
+        </button>
+        <button *ngIf="isSubscribed(cat.id)"
+          mat-stroked-button color="warn"
+          (click)="unsubscribeCategory(cat.id)">
+          <mat-icon>close</mat-icon>
+          Dezaboneaza-te
+        </button>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+  <!-- Evenimentele mele (doar Organizator/Admin) -->
+  <mat-card *ngIf="isOrganizer()" class="section-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>event</mat-icon>
+        Evenimentele mele
+      </mat-card-title>
+      <div class="card-header-action">
+        <button mat-raised-button color="primary" routerLink="/events/new">
+          <mat-icon>add</mat-icon>
+          Eveniment nou
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div *ngIf="loading" class="loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading && myEvents.length === 0" class="empty-small">
+        <p>Nu ai creat niciun eveniment inca.</p>
+      </div>
+
+      <div *ngFor="let event of myEvents" class="event-item">
+        <div class="event-info">
+          <h3>{{ event.title }}</h3>
+          <p>
+            <mat-icon>location_on</mat-icon> {{ event.location }} &nbsp;|&nbsp;
+            <mat-icon>calendar_today</mat-icon> {{ formatDate(event.eventDate) }} &nbsp;|&nbsp;
+            <mat-icon>category</mat-icon> {{ event.category.name }}
+          </p>
+        </div>
+        <div class="event-stats">
+          <div class="stat">
+            <span class="stat-number">{{ event.totalInvited }}</span>
+            <span class="stat-label">Invitati</span>
+          </div>
+          <div class="stat accepted">
+            <span class="stat-number">{{ event.accepted }}</span>
+            <span class="stat-label">Acceptate</span>
+          </div>
+          <div class="stat pending">
+            <span class="stat-number">{{ event.pending }}</span>
+            <span class="stat-label">In asteptare</span>
+          </div>
+        </div>
+        <div class="event-actions">
+          <button mat-icon-button [routerLink]="['/events', event.id]" title="Vezi">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button [routerLink]="['/events', event.id, 'edit']" title="Editeaza">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+</div>

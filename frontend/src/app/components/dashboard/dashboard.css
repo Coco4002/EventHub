@@ -1,0 +1,169 @@
+.dashboard-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.role-badge {
+  display: inline-block;
+  background-color: #6a1b9a;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.section-card {
+  margin-bottom: 24px;
+}
+
+.card-header-action {
+  margin-left: auto;
+}
+
+mat-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.browse-btn {
+  margin-top: 8px;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.event-info {
+  flex: 1;
+}
+
+.event-info h3 {
+  margin: 0 0 4px 0;
+}
+
+.event-info p {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.event-info mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.event-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #999;
+}
+
+.stat.accepted .stat-number {
+  color: green;
+}
+
+.stat.pending .stat-number {
+  color: orange;
+}
+
+.event-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.empty-small {
+  color: #999;
+  padding: 16px 0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.section-subtitle {
+  color: #666;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.categories-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-item-full {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.category-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.category-desc {
+  font-size: 13px;
+  color: #999;
+}
