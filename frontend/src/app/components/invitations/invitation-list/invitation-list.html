@@ -1,1 +1,106 @@
-<p>invitation-list works!</p>
+<div class="invitations-container">
+  <h1>Invitatiile mele</h1>
+
+  <div *ngIf="loading" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <mat-tab-group *ngIf="!loading">
+
+    <!-- Tab Pending -->
+    <mat-tab [label]="'In asteptare (' + getPending().length + ')'">
+      <div class="tab-content">
+        <div *ngIf="getPending().length === 0" class="empty">
+          <mat-icon>inbox</mat-icon>
+          <p>Nu ai invitatii in asteptare.</p>
+        </div>
+
+        <mat-card *ngFor="let inv of getPending()" class="invitation-card">
+          <mat-card-header>
+            <mat-card-title>{{ inv.event.title }}</mat-card-title>
+            <mat-card-subtitle>{{ inv.event.category.name }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="event-info">
+              <p><mat-icon>location_on</mat-icon> {{ inv.event.location }}</p>
+              <p><mat-icon>calendar_today</mat-icon> {{ formatDate(inv.event.eventDate) }}</p>
+              <p><mat-icon>person</mat-icon> {{ inv.event.organizer.fullName }}</p>
+              <p><mat-icon>mail</mat-icon> Invitatie trimisa: {{ formatDate(inv.sentAt) }}</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="respond(inv.id, 'Accepted')">
+              <mat-icon>check</mat-icon> Accepta
+            </button>
+            <button mat-stroked-button color="warn" (click)="respond(inv.id, 'Declined')">
+              <mat-icon>close</mat-icon> Refuza
+            </button>
+            <button mat-button [routerLink]="['/events', inv.event.id]">
+              <mat-icon>visibility</mat-icon> Vezi eveniment
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Tab Accepted -->
+    <mat-tab [label]="'Acceptate (' + getAccepted().length + ')'">
+      <div class="tab-content">
+        <div *ngIf="getAccepted().length === 0" class="empty">
+          <mat-icon>event_available</mat-icon>
+          <p>Nu ai invitatii acceptate.</p>
+        </div>
+
+        <mat-card *ngFor="let inv of getAccepted()" class="invitation-card accepted">
+          <mat-card-header>
+            <mat-card-title>{{ inv.event.title }}</mat-card-title>
+            <mat-card-subtitle>{{ inv.event.category.name }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="event-info">
+              <p><mat-icon>location_on</mat-icon> {{ inv.event.location }}</p>
+              <p><mat-icon>calendar_today</mat-icon> {{ formatDate(inv.event.eventDate) }}</p>
+              <p><mat-icon>person</mat-icon> {{ inv.event.organizer.fullName }}</p>
+              <p style="color: green;"><mat-icon>check_circle</mat-icon> Participi la acest eveniment!</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button [routerLink]="['/events', inv.event.id]">
+              <mat-icon>visibility</mat-icon> Vezi eveniment
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Tab Declined -->
+    <mat-tab [label]="'Refuzate (' + getDeclined().length + ')'">
+      <div class="tab-content">
+        <div *ngIf="getDeclined().length === 0" class="empty">
+          <mat-icon>event_busy</mat-icon>
+          <p>Nu ai invitatii refuzate.</p>
+        </div>
+
+        <mat-card *ngFor="let inv of getDeclined()" class="invitation-card declined">
+          <mat-card-header>
+            <mat-card-title>{{ inv.event.title }}</mat-card-title>
+            <mat-card-subtitle>{{ inv.event.category.name }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="event-info">
+              <p><mat-icon>location_on</mat-icon> {{ inv.event.location }}</p>
+              <p><mat-icon>calendar_today</mat-icon> {{ formatDate(inv.event.eventDate) }}</p>
+              <p><mat-icon>person</mat-icon> {{ inv.event.organizer.fullName }}</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button [routerLink]="['/events', inv.event.id]">
+              <mat-icon>visibility</mat-icon> Vezi eveniment
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

@@ -1,0 +1,58 @@
+.invitations-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 {
+  margin-bottom: 24px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}
+
+.tab-content {
+  padding: 24px 0;
+}
+
+.invitation-card {
+  margin-bottom: 16px;
+}
+
+.invitation-card.accepted {
+  border-left: 4px solid green;
+}
+
+.invitation-card.declined {
+  border-left: 4px solid red;
+  opacity: 0.7;
+}
+
+.event-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.empty {
+  text-align: center;
+  padding: 48px;
+  color: #999;
+}
+
+.empty mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+}
+
+mat-card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+}
